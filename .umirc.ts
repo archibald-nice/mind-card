@@ -24,7 +24,7 @@ export default defineConfig({
     '/api': {
       target: 'http://localhost:8080',
       changeOrigin: true,
-      pathRewrite: { '^/api': '' },
+      // 不需要pathRewrite，保持/api前缀
     },
   },
   routes: [
@@ -36,6 +36,11 @@ export default defineConfig({
       name: '首页',
       path: '/home',
       component: './Home',
+    },
+    {
+      name: '卡片管理',
+      path: '/cards',
+      component: './Cards',
     },
     {
       name: '权限演示',
