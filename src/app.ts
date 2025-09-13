@@ -1,5 +1,8 @@
 // 运行时配置
 
+import { ReduxProvider } from '@/store/redux/Provider';
+import React from 'react';
+
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate
 export async function getInitialState(): Promise<{ name: string }> {
@@ -14,3 +17,8 @@ export const layout = () => {
     },
   };
 };
+
+// 配置根组件
+export function rootContainer(container: React.ReactNode) {
+  return React.createElement(ReduxProvider, null, container);
+}

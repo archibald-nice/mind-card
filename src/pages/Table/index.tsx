@@ -3,6 +3,7 @@ import {
   ActionType,
   FooterToolbar,
   PageContainer,
+  ProColumns,
   ProDescriptions,
   ProDescriptionsItemProps,
   ProTable,
@@ -70,7 +71,7 @@ const handleRemove = async (selectedRows: API.UserInfo[]) => {
   if (!selectedRows) return true;
   try {
     await deleteUser({
-      userId: selectedRows.find((row) => row.id)?.id || '',
+      userId: selectedRows.find(row => row.id)?.id || '',
     });
     hide();
     message.success('删除成功，即将刷新');
@@ -90,7 +91,7 @@ const TableList: React.FC<unknown> = () => {
   const actionRef = useRef<ActionType>();
   const [row, setRow] = useState<API.UserInfo>();
   const [selectedRowsState, setSelectedRows] = useState<API.UserInfo[]>([]);
-  const columns: ProDescriptionsItemProps<API.UserInfo>[] = [
+  const tableColumns: ProColumns<API.UserInfo>[] = [
     {
       title: '名称',
       dataIndex: 'name',
@@ -139,6 +140,26 @@ const TableList: React.FC<unknown> = () => {
     },
   ];
 
+  // ProDescriptions 使用的列定义
+  const descriptionColumns: ProDescriptionsItemProps<API.UserInfo>[] = [
+    {
+      title: '名称',
+      dataIndex: 'name',
+    },
+    {
+      title: '昵称',
+      dataIndex: 'nickName',
+    },
+    {
+      title: '性别',
+      dataIndex: 'gender',
+      valueEnum: {
+        0: { text: '男', status: 'MALE' },
+        1: { text: '女', status: 'FEMALE' },
+      },
+    },
+  ];
+
   return (
     <PageContainer
       header={{
@@ -164,9 +185,7 @@ const TableList: React.FC<unknown> = () => {
         request={async (params, sorter, filter) => {
           const { data, success } = await queryUserList({
             ...params,
-            // FIXME: remove @ts-ignore
-            // @ts-ignore
-            sorter,
+            sorter: sorter as any,
             filter,
           });
           return {
@@ -174,7 +193,7 @@ const TableList: React.FC<unknown> = () => {
             success,
           };
         }}
-        columns={columns}
+        columns={tableColumns}
         rowSelection={{
           onChange: (_, selectedRows) => setSelectedRows(selectedRows),
         }}
@@ -206,7 +225,7 @@ const TableList: React.FC<unknown> = () => {
         modalVisible={createModalVisible}
       >
         <ProTable<API.UserInfo, API.UserInfo>
-          onSubmit={async (value) => {
+          onSubmit={async value => {
             const success = await handleAdd(value);
             if (success) {
               handleModalVisible(false);
@@ -217,12 +236,12 @@ const TableList: React.FC<unknown> = () => {
           }}
           rowKey="id"
           type="form"
-          columns={columns}
+          columns={tableColumns}
         />
       </CreateForm>
       {stepFormValues && Object.keys(stepFormValues).length ? (
         <UpdateForm
-          onSubmit={async (value) => {
+          onSubmit={async value => {
             const success = await handleUpdate(value);
             if (success) {
               handleUpdateModalVisible(false);
@@ -259,7 +278,7 @@ const TableList: React.FC<unknown> = () => {
             params={{
               id: row?.name,
             }}
-            columns={columns}
+            columns={descriptionColumns}
           />
         )}
       </Drawer>

@@ -21,3 +21,11 @@ export const useCurrentRoute = () =>
   useAppSelector(state => state.app.currentRoute);
 export const useBreadcrumbs = () =>
   useAppSelector(state => state.app.breadcrumbs);
+
+export const useCards = () => useAppSelector(state => state.cards.cards);
+export const useCurrentPath = () =>
+  useAppSelector(state => state.cards.currentPath);
+export const useSearchQuery = () =>
+  useAppSelector(state => state.cards.searchQuery);
+export const useCardsLoading = () =>
+  useAppSelector(state => state.cards.loading);

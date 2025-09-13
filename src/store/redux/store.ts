@@ -13,6 +13,7 @@ import storage from 'redux-persist/lib/storage';
 
 // 导入各个 slice
 import appSlice from './slices/appSlice';
+import cardSlice from './slices/cardSlice';
 import globalSlice from './slices/globalSlice';
 import userSlice from './slices/userSlice';
 
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   user: userSlice,
   global: globalSlice,
   app: appSlice,
+  cards: cardSlice,
 });
 
 // 持久化配置

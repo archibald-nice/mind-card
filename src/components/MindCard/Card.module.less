@@ -1,0 +1,21 @@
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 10%);
+  padding: 16px;
+  cursor: move;
+  transition: all 0.2s ease;
+  border: 1px solid #e8e8e8;
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 15%);
+    transform: translateY(-2px);
+  }
+
+  &.cardDragging {
+    opacity: 0.8;
+    transform: rotate(2deg);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 20%);
+    cursor: grabbing;
+  }
+}

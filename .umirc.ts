@@ -30,12 +30,17 @@ export default defineConfig({
   routes: [
     {
       path: '/',
-      redirect: '/home',
+      redirect: '/mind-card',
     },
     {
       name: '首页',
       path: '/home',
       component: './Home',
+    },
+    {
+      name: '数字化卡片看板',
+      path: '/mind-card',
+      component: './MindCard',
     },
     {
       name: '卡片管理',
