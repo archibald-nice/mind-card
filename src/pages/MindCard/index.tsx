@@ -168,25 +168,26 @@ const MindCard: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="app-container">
+      {/* Header 顶部栏 */}
       <Header
         onCreateCard={() => handleCreateCard('新卡片')}
         searchQuery={searchQuery}
         onSearchChange={value => dispatch(setSearchQuery(value))}
       />
 
-      <div className="pt-16">
-        <Breadcrumb currentPath={currentPath} onNavigateBack={navigateBack} />
+      {/* 面包屑导航 */}
+      <Breadcrumb currentPath={currentPath} onNavigateBack={navigateBack} />
 
-        <CardSpace
-          cards={getCurrentCards()}
-          searchQuery={searchQuery}
-          onCardClick={navigateToCard}
-          onUpdateCard={handleUpdateCard}
-          onDeleteCard={handleDeleteCard}
-          onCreateCard={handleCreateCard}
-        />
-      </div>
+      {/* 卡片容器 */}
+      <CardSpace
+        cards={getCurrentCards()}
+        searchQuery={searchQuery}
+        onCardClick={navigateToCard}
+        onUpdateCard={handleUpdateCard}
+        onDeleteCard={handleDeleteCard}
+        onCreateCard={handleCreateCard}
+      />
     </div>
   );
 };

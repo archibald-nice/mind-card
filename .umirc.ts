@@ -19,7 +19,10 @@ export default defineConfig({
   request: {},
   layout: {
     title: '@umijs/max',
+    // 禁用 ProLayout 的菜单功能以避免 findDOMNode 警告
+    pure: true,
   },
+  extraPostCSSPlugins: [require('autoprefixer')],
   proxy: {
     '/api': {
       target: 'http://localhost:8080',
@@ -41,21 +44,6 @@ export default defineConfig({
       name: '数字化卡片看板',
       path: '/mind-card',
       component: './MindCard',
-    },
-    {
-      name: '卡片管理',
-      path: '/cards',
-      component: './Cards',
-    },
-    {
-      name: '权限演示',
-      path: '/access',
-      component: './Access',
-    },
-    {
-      name: ' CRUD 示例',
-      path: '/table',
-      component: './Table',
     },
   ],
   npmClient: 'pnpm',

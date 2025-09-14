@@ -1,14 +1,20 @@
 import { Card as CardType, UpdateCardParams } from '@/types/card';
 import {
-  CheckOutlined,
-  CloseOutlined,
-  DeleteOutlined,
-  EditOutlined,
-  RightOutlined,
-} from '@ant-design/icons';
-import { Button } from 'antd';
+  ArrowForward as ArrowForwardIcon,
+  Check as CheckIcon,
+  Close as CloseIcon,
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+} from '@mui/icons-material';
+import {
+  Box,
+  CardContent,
+  IconButton,
+  Card as MuiCard,
+  TextField,
+  Typography,
+} from '@mui/material';
 import React, { useState } from 'react';
-import styles from './Card.module.less';
 
 interface CardProps {
   card: CardType;
@@ -47,101 +53,158 @@ const Card: React.FC<CardProps> = ({
   };
 
   return (
-    <div
-      className={`${styles.card} ${isDragging ? styles.cardDragging : ''}`}
-      style={{
+    <MuiCard
+      sx={{
         position: 'absolute',
         left: `${card.position?.x || 0}px`,
         top: `${card.position?.y || 0}px`,
-        width: '280px',
-        minHeight: '160px',
+        width: 280,
+        minHeight: 160,
+        cursor: isDragging ? 'grabbing' : 'pointer',
+        boxShadow: isDragging ? 8 : 2,
+        opacity: isDragging ? 0.8 : 1,
+        transition: isDragging ? 'none' : 'all 0.3s ease',
+        '&:hover': {
+          boxShadow: 4,
+        },
       }}
       onClick={handleCardClick}
     >
-      <div className="flex justify-between items-start mb-3">
+      <CardContent sx={{ p: 2 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            mb: 2,
+          }}
+        >
+          {isEditing ? (
+            <TextField
+              value={title}
+              onChange={e => setTitle(e.target.value)}
+              variant="standard"
+              fullWidth
+              autoFocus
+              sx={{
+                '& .MuiInput-root': {
+                  fontSize: '1.125rem',
+                  fontWeight: 600,
+                },
+              }}
+            />
+          ) : (
+            <Typography
+              variant="h6"
+              sx={{
+                fontSize: '1.125rem',
+                fontWeight: 600,
+                color: '#111827',
+                flex: 1,
+                cursor: 'pointer',
+              }}
+            >
+              {card.title}
+            </Typography>
+          )}
+
+          <Box sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
+            {isEditing ? (
+              <>
+                <IconButton
+                  size="small"
+                  onClick={handleSave}
+                  sx={{ color: '#16a34a' }}
+                >
+                  <CheckIcon />
+                </IconButton>
+                <IconButton
+                  size="small"
+                  onClick={handleCancel}
+                  sx={{ color: '#6b7280' }}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </>
+            ) : (
+              <>
+                <IconButton
+                  size="small"
+                  onClick={e => {
+                    e.stopPropagation();
+                    setIsEditing(true);
+                  }}
+                  sx={{ color: '#6b7280' }}
+                >
+                  <EditIcon />
+                </IconButton>
+                <IconButton
+                  size="small"
+                  onClick={e => {
+                    e.stopPropagation();
+                    if (confirm('确定要删除这张卡片吗？')) {
+                      onDelete(card.id);
+                    }
+                  }}
+                  sx={{ color: '#dc2626' }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </>
+            )}
+          </Box>
+        </Box>
+
         {isEditing ? (
-          <input
-            type="text"
-            value={title}
-            onChange={e => setTitle(e.target.value)}
-            className="flex-1 text-lg font-semibold bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500"
-            autoFocus
+          <TextField
+            value={content}
+            onChange={e => setContent(e.target.value)}
+            multiline
+            rows={3}
+            variant="outlined"
+            fullWidth
+            placeholder="添加卡片内容..."
+            size="small"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                fontSize: '0.875rem',
+              },
+            }}
           />
         ) : (
-          <h3 className="text-lg font-semibold text-gray-900 flex-1 cursor-pointer">
-            {card.title}
-          </h3>
+          <>
+            {card.content && (
+              <Typography
+                variant="body2"
+                sx={{
+                  color: '#6b7280',
+                  mb: 2,
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                }}
+              >
+                {card.content}
+              </Typography>
+            )}
+
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <Typography variant="caption" sx={{ color: '#9ca3af' }}>
+                点击进入卡片空间
+              </Typography>
+              <ArrowForwardIcon sx={{ color: '#1976d2', fontSize: 16 }} />
+            </Box>
+          </>
         )}
-
-        <div className="flex items-center space-x-1 ml-2">
-          {isEditing ? (
-            <>
-              <Button
-                type="text"
-                size="small"
-                icon={<CheckOutlined />}
-                onClick={handleSave}
-                className="text-green-600 hover:bg-green-50"
-              />
-              <Button
-                type="text"
-                size="small"
-                icon={<CloseOutlined />}
-                onClick={handleCancel}
-                className="text-gray-600 hover:bg-gray-50"
-              />
-            </>
-          ) : (
-            <>
-              <Button
-                type="text"
-                size="small"
-                icon={<EditOutlined />}
-                onClick={e => {
-                  e.stopPropagation();
-                  setIsEditing(true);
-                }}
-                className="text-gray-600 hover:bg-gray-50"
-              />
-              <Button
-                type="text"
-                size="small"
-                icon={<DeleteOutlined />}
-                onClick={e => {
-                  e.stopPropagation();
-                  if (confirm('确定要删除这张卡片吗？')) {
-                    onDelete(card.id);
-                  }
-                }}
-                className="text-red-600 hover:bg-red-50"
-              />
-            </>
-          )}
-        </div>
-      </div>
-
-      {isEditing ? (
-        <textarea
-          value={content}
-          onChange={e => setContent(e.target.value)}
-          className="w-full h-20 text-sm text-gray-600 bg-transparent border border-gray-300 rounded p-2 resize-none focus:outline-none focus:border-blue-500"
-          placeholder="添加卡片内容..."
-        />
-      ) : (
-        <>
-          {card.content && (
-            <p className="text-sm text-gray-600 mb-3 line-clamp-3">
-              {card.content}
-            </p>
-          )}
-
-          <div className="flex justify-between items-center text-xs text-gray-500">
-            <span>点击进入卡片空间</span>
-            <RightOutlined className="text-blue-500" />
-          </div>
-        </>
-      )}
-    </div>
+      </CardContent>
+    </MuiCard>
   );
 };
 

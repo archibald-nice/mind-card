@@ -1,10 +1,20 @@
 import {
-  PlusOutlined,
-  QuestionCircleOutlined,
-  SearchOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
-import { Button, Input } from 'antd';
+  Add as AddIcon,
+  Help as HelpIcon,
+  Search as SearchIcon,
+  Settings as SettingsIcon,
+} from '@mui/icons-material';
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Toolbar,
+  Typography,
+} from '@mui/material';
 import React from 'react';
 
 interface HeaderProps {
@@ -19,39 +29,122 @@ const Header: React.FC<HeaderProps> = ({
   onSearchChange,
 }) => {
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white shadow-sm border-b border-gray-200 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-4">
-            <h1 className="text-xl font-bold text-gray-900">数字化卡片看板</h1>
-          </div>
+    <AppBar position="static" elevation={1} sx={{ backgroundColor: 'white' }}>
+      <Container maxWidth="xl">
+        <Toolbar disableGutters sx={{ py: 1 }}>
+          {/* 左侧标题区域 */}
+          <Box sx={{ display: 'flex', alignItems: 'center', mr: 4 }}>
+            <Box
+              sx={{
+                width: 40,
+                height: 40,
+                background: 'linear-gradient(135deg, #1976d2, #7b1fa2)',
+                borderRadius: 2,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mr: 2,
+              }}
+            >
+              <Typography
+                variant="h6"
+                sx={{ color: 'white', fontWeight: 'bold', fontSize: 14 }}
+              >
+                MC
+              </Typography>
+            </Box>
+            <Box>
+              <Typography
+                variant="h6"
+                sx={{
+                  color: '#111827',
+                  fontWeight: 'bold',
+                  fontSize: '1.25rem',
+                  lineHeight: 1.2,
+                }}
+              >
+                数字化卡片看板
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: '#6b7280',
+                  display: { xs: 'none', sm: 'block' },
+                }}
+              >
+                Mind Card Dashboard
+              </Typography>
+            </Box>
+          </Box>
 
-          <div className="flex-1 max-w-md mx-8">
-            <Input
-              placeholder="搜索卡片..."
-              prefix={<SearchOutlined />}
+          {/* 中间搜索区域 */}
+          <Box sx={{ flex: 1, maxWidth: 'xl', mx: 4 }}>
+            <TextField
+              fullWidth
+              placeholder="搜索卡片标题或内容..."
               value={searchQuery}
               onChange={e => onSearchChange(e.target.value)}
-              allowClear
+              size="small"
+              variant="outlined"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon sx={{ color: '#9ca3af' }} />
+                  </InputAdornment>
+                ),
+              }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2,
+                  backgroundColor: '#f9fafb',
+                },
+              }}
             />
-          </div>
+          </Box>
 
-          <div className="flex items-center space-x-3">
+          {/* 右侧按钮区域 */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Button
-              type="primary"
-              icon={<PlusOutlined />}
+              variant="contained"
+              startIcon={<AddIcon />}
               onClick={onCreateCard}
+              sx={{
+                display: { xs: 'none', sm: 'flex' },
+                backgroundColor: '#1976d2',
+                '&:hover': {
+                  backgroundColor: '#1565c0',
+                },
+              }}
             >
               新建卡片
             </Button>
 
-            <Button type="text" icon={<SettingOutlined />} />
+            <Button
+              variant="contained"
+              onClick={onCreateCard}
+              sx={{
+                display: { xs: 'flex', sm: 'none' },
+                minWidth: 'auto',
+                backgroundColor: '#1976d2',
+                '&:hover': {
+                  backgroundColor: '#1565c0',
+                },
+              }}
+            >
+              <AddIcon />
+            </Button>
 
-            <Button type="text" icon={<QuestionCircleOutlined />} />
-          </div>
-        </div>
-      </div>
-    </header>
+            <IconButton size="small" sx={{ color: '#6b7280' }} title="设置">
+              <SettingsIcon />
+            </IconButton>
+
+            <IconButton size="small" sx={{ color: '#6b7280' }} title="帮助">
+              <HelpIcon />
+            </IconButton>
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 };
 

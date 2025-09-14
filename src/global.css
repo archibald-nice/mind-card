@@ -1,0 +1,29 @@
+/* 全局样式 - Material-UI */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* 自定义容器样式 */
+.app-container {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* 卡片看板样式 */
+.card-space {
+  position: relative;
+  min-height: 600px;
+  background-color: #fff;
+  background-image: linear-gradient(rgba(0, 0, 0, 3%) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 3%) 1px, transparent 1px);
+  background-size: 20px 20px;
+}

@@ -1,9 +1,8 @@
 import { Card as CardType, Position } from '@/types/card';
-import { PlusOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { Add as AddIcon } from '@mui/icons-material';
+import { Box, Container, Fab, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import Card from './Card';
-import styles from './CardSpace.module.less';
 
 interface CardSpaceProps {
   cards: CardType[];
@@ -35,7 +34,9 @@ const CardSpace: React.FC<CardSpaceProps> = ({
   const handleMouseDown = (e: React.MouseEvent, card: CardType) => {
     if (
       (e.target as HTMLElement).tagName === 'BUTTON' ||
-      (e.target as HTMLElement).closest('button')
+      (e.target as HTMLElement).closest('button') ||
+      (e.target as HTMLElement).tagName === 'INPUT' ||
+      (e.target as HTMLElement).tagName === 'TEXTAREA'
     ) {
       return;
     }
@@ -83,46 +84,85 @@ const CardSpace: React.FC<CardSpaceProps> = ({
   };
 
   return (
-    <div
-      className={styles.cardSpace}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
-      onDoubleClick={handleDoubleClick}
-    >
-      {filteredCards.length === 0 ? (
-        <div className="flex flex-col items-center justify-center min-h-96 text-gray-500">
-          <PlusOutlined className="text-6xl mb-4 text-gray-300" />
-          <p className="text-lg mb-2">暂无卡片</p>
-          <p className="text-sm">双击空白区域创建新卡片</p>
-        </div>
-      ) : (
-        filteredCards.map(card => (
-          <div key={card.id} onMouseDown={e => handleMouseDown(e, card)}>
-            <Card
-              card={card}
-              onClick={onCardClick}
-              onUpdate={onUpdateCard}
-              onDelete={onDeleteCard}
-              isDragging={draggedCard?.id === card.id}
-            />
-          </div>
-        ))
-      )}
+    <Container maxWidth="xl" sx={{ py: 3 }}>
+      <Box
+        className="card-space"
+        sx={{
+          position: 'relative',
+          minHeight: 600,
+          backgroundColor: '#ffffff',
+          backgroundImage: `
+            linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px)
+          `,
+          backgroundSize: '20px 20px',
+          border: '1px solid #e0e0e0',
+          borderRadius: 1,
+          cursor: 'crosshair',
+        }}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        onDoubleClick={handleDoubleClick}
+      >
+        {filteredCards.length === 0 ? (
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              minHeight: 400,
+              color: '#9ca3af',
+            }}
+          >
+            <AddIcon sx={{ fontSize: 64, mb: 2, color: '#e0e0e0' }} />
+            <Typography variant="h6" sx={{ mb: 1, color: '#6b7280' }}>
+              暂无卡片
+            </Typography>
+            <Typography variant="body2" sx={{ color: '#9ca3af' }}>
+              双击空白区域创建新卡片
+            </Typography>
+          </Box>
+        ) : (
+          filteredCards.map(card => (
+            <Box
+              key={card.id}
+              onMouseDown={e => handleMouseDown(e, card)}
+              sx={{ cursor: draggedCard?.id === card.id ? 'grabbing' : 'grab' }}
+            >
+              <Card
+                card={card}
+                onClick={onCardClick}
+                onUpdate={onUpdateCard}
+                onDelete={onDeleteCard}
+                isDragging={draggedCard?.id === card.id}
+              />
+            </Box>
+          ))
+        )}
 
-      {filteredCards.length > 0 && (
-        <div className="fixed bottom-8 right-8">
-          <Button
-            type="primary"
-            shape="circle"
-            size="large"
-            icon={<PlusOutlined />}
+        {filteredCards.length > 0 && (
+          <Fab
+            color="primary"
+            sx={{
+              position: 'fixed',
+              bottom: 32,
+              right: 32,
+              width: 56,
+              height: 56,
+              boxShadow: 4,
+              '&:hover': {
+                boxShadow: 8,
+              },
+            }}
             onClick={() => onCreateCard('新卡片')}
-            className="w-14 h-14 shadow-lg hover:shadow-xl transition-all"
-          />
-        </div>
-      )}
-    </div>
+          >
+            <AddIcon />
+          </Fab>
+        )}
+      </Box>
+    </Container>
   );
 };
 

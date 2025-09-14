@@ -13,6 +13,11 @@
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
     "@ant-design/pro-components": "^2.4.4",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.2",
+    "@mui/material": "^7.3.2",
+    "@mui/system": "^7.3.2",
     "@reduxjs/toolkit": "^2.8.2",
     "@types/redux-persist": "^4.3.1",
     "@umijs/max": "^4.4.11",
@@ -24,14 +29,19 @@
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.13",
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
     "@types/react-redux": "^7.1.33",
+    "@umijs/plugins": "^4.4.12",
+    "autoprefixer": "^10.4.21",
     "husky": "^9",
     "lint-staged": "^13.2.0",
+    "postcss": "^8.5.6",
     "prettier": "^2.8.7",
     "prettier-plugin-organize-imports": "^3.2.2",
     "prettier-plugin-packagejson": "^2.4.3",
+    "tailwindcss": "^4.1.13",
     "typescript": "^5.0.3"
   }
 }

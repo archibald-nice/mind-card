@@ -1,6 +1,9 @@
 import { Card } from '@/types/card';
-import { HomeOutlined, RightOutlined } from '@ant-design/icons';
-import { Breadcrumb as AntBreadcrumb } from 'antd';
+import {
+  Home as HomeIcon,
+  NavigateNext as NavigateNextIcon,
+} from '@mui/icons-material';
+import { Box, Breadcrumbs, Chip, Container, Tooltip } from '@mui/material';
 import React from 'react';
 
 interface BreadcrumbProps {
@@ -13,40 +16,68 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
   onNavigateBack,
 }) => {
   const items = [
-    {
-      title: (
-        <button
-          type="button"
-          onClick={() => onNavigateBack(-1)}
-          className="breadcrumb-item flex items-center space-x-1 hover:text-blue-600 transition-colors"
-        >
-          <HomeOutlined />
-          <span>根目录</span>
-        </button>
-      ),
-    },
-    ...currentPath.map((card, index) => ({
-      title: (
-        <button
-          type="button"
+    <Chip
+      key="home"
+      icon={<HomeIcon fontSize="small" />}
+      label="根目录"
+      clickable
+      onClick={() => onNavigateBack(-1)}
+      size="small"
+      sx={{
+        backgroundColor: 'transparent',
+        border: '1px solid #e0e0e0',
+        '&:hover': {
+          backgroundColor: '#f5f5f5',
+        },
+      }}
+    />,
+    ...currentPath.map((card, index) => (
+      <Tooltip key={card.id} title={card.title} arrow>
+        <Chip
+          label={card.title}
+          clickable
           onClick={() => onNavigateBack(index)}
-          className="breadcrumb-item max-w-xs truncate hover:text-blue-600 transition-colors"
-        >
-          {card.title}
-        </button>
-      ),
-    })),
+          size="small"
+          sx={{
+            maxWidth: 200,
+            backgroundColor: 'transparent',
+            border: '1px solid #e0e0e0',
+            '&:hover': {
+              backgroundColor: '#f5f5f5',
+            },
+            '& .MuiChip-label': {
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            },
+          }}
+        />
+      </Tooltip>
+    )),
   ];
 
   return (
-    <div className="bg-white border-b border-gray-200 px-4 py-3">
-      <div className="max-w-7xl mx-auto">
-        <AntBreadcrumb
+    <Box
+      sx={{
+        backgroundColor: 'white',
+        borderBottom: '1px solid #e0e0e0',
+        py: 1,
+      }}
+    >
+      <Container maxWidth="xl">
+        <Breadcrumbs
+          separator={
+            <NavigateNextIcon fontSize="small" sx={{ color: '#9e9e9e' }} />
+          }
           items={items}
-          separator={<RightOutlined className="text-gray-400 text-sm" />}
+          sx={{
+            '& .MuiBreadcrumbs-ol': {
+              flexWrap: 'nowrap',
+            },
+          }}
         />
-      </div>
-    </div>
+      </Container>
+    </Box>
   );
 };
 
