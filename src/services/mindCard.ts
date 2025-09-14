@@ -31,8 +31,8 @@ export async function getMindCards(parentId?: string): Promise<Card[]> {
 
     if (response.success) {
       return response.data.items.map(item => ({
-        id: item.objectId,
         ...item.objectData,
+        id: item.objectId,
         createdAt: item.createdAt,
         updatedAt: item.updatedAt,
       }));

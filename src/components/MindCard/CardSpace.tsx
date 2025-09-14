@@ -84,7 +84,7 @@ const CardSpace: React.FC<CardSpaceProps> = ({
   };
 
   return (
-    <Container maxWidth="xl" sx={{ py: 3 }}>
+    <Container maxWidth="xl" sx={{ py: 1 }}>
       <Box
         className="card-space"
         sx={{

@@ -18,9 +18,18 @@ export default defineConfig({
   initialState: {},
   request: {},
   layout: {
-    title: '@umijs/max',
-    // 禁用 ProLayout 的菜单功能以避免 findDOMNode 警告
-    pure: true,
+    title: 'Mind Card',
+    // 启用顶部导航模式
+    navTheme: 'light',
+    layout: 'mix',
+    contentWidth: 'Fluid',
+    fixedHeader: true,
+    colorPrimary: '#1976d2',
+    splitMenus: false,
+    // 配置菜单项
+    menu: {
+      locale: false,
+    },
   },
   extraPostCSSPlugins: [require('autoprefixer')],
   proxy: {
@@ -33,7 +42,7 @@ export default defineConfig({
   routes: [
     {
       path: '/',
-      redirect: '/mind-card',
+      redirect: '/home',
     },
     {
       name: '首页',
@@ -41,7 +50,7 @@ export default defineConfig({
       component: './Home',
     },
     {
-      name: '数字化卡片看板',
+      name: '思维卡片',
       path: '/mind-card',
       component: './MindCard',
     },

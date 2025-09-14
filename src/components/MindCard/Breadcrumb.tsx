@@ -69,13 +69,14 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
           separator={
             <NavigateNextIcon fontSize="small" sx={{ color: '#9e9e9e' }} />
           }
-          items={items}
           sx={{
             '& .MuiBreadcrumbs-ol': {
               flexWrap: 'nowrap',
             },
           }}
-        />
+        >
+          {items}
+        </Breadcrumbs>
       </Container>
     </Box>
   );

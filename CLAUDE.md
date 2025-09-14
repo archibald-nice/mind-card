@@ -32,15 +32,15 @@ npm run start
 这是一个基于 UmiJS Max 的 React 全栈应用，集成了以下技术栈：
 
 - **前端框架**: React + TypeScript + UmiJS Max
-- **UI 组件**: Ant Design + Pro Components
+- **UI 组件**: Material-UI v5 + Pro Components
 - **状态管理**: Redux Toolkit + Redux Persist
 - **网络请求**: Axios (通过 UmiJS request 插件)
 - **包管理器**: pnpm
 
 ### 核心配置文件
 
-- `.umirc.ts` - UmiJS 主配置文件，包含路由、代理、插件配置
-- `src/app.ts` - 运行时配置，用于 Layout 用户信息和权限初始化
+- `.umirc.ts` - UmiJS 主配置文件，包含路由、代理、插件配置和 ProLayout 设置
+- `src/app.ts` - 运行时配置，用于 Layout 用户信息和权限初始化，包含布局覆盖配置
 
 ### 项目结构
 
@@ -79,9 +79,14 @@ src/
 
 - `/` → 重定向到 `/home`
 - `/home` → 首页
-- `/cards` → 卡片管理
-- `/access` → 权限演示
-- `/table` → CRUD 示例页面
+- `/mind-card` → 数字化卡片看板
+
+### UI 架构
+
+- **布局系统**: UmiJS ProLayout 配置为顶部导航模式 (`layout: 'mix'`)
+- **UI 组件**: Material-UI v5 + Emotion 样式系统
+- **主题配置**: 统一的 Material-UI 主题，主色为 `#1976d2`
+- **导航栏**: 基于 UmiJS ProLayout 的顶部导航，支持路由自动生成
 
 ### 代码规范
 
@@ -89,3 +94,28 @@ src/
 - Prettier 配置在 `.prettierrc.js`，包含详细格式化规则
 - 配置了 lint-staged 和 husky 进行代码提交检查
 - 使用 `@typescript-eslint/no-explicit-any: 'warn'` 允许 any 类型但会警告
+
+## 重要更新记录
+
+### 2025-09-14: UI 架构重构和顶部导航栏实现
+
+**主要变更**:
+
+1. **UI 框架迁移**: 从 TailwindCSS + Ant Design 完全迁移到 Material-UI v5
+2. **布局系统重构**: 实现了基于 UmiJS ProLayout 的顶部导航栏布局
+3. **组件库统一**: 所有页面组件统一使用 Material-UI 设计系统
+4. **TypeScript 错误修复**: 修复了多个组件的 TypeScript 类型错误
+
+**技术细节**:
+
+- ProLayout 配置: `layout: 'mix'` 模式实现顶部导航
+- Material-UI 主题配置: 统一色彩方案和字体
+- 组件重构: Header、Breadcrumb、Card、CardSpace 等组件 Material-UI 化
+- 路由优化: 调整路由结构以适应 ProLayout 自动菜单生成
+
+**解决的问题**:
+
+- 消除了 findDOMNode 警告（通过 ProLayout pure 模式）
+- 统一了设计语言和用户体验
+- 提升了代码类型安全性
+- 实现了响应式顶部导航布局

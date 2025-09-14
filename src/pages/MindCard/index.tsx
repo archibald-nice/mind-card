@@ -1,6 +1,5 @@
 import Breadcrumb from '@/components/MindCard/Breadcrumb';
 import CardSpace from '@/components/MindCard/CardSpace';
-import Header from '@/components/MindCard/Header';
 import {
   createMindCard,
   deleteMindCard,
@@ -23,6 +22,15 @@ import {
   updateCard as updateCardAction,
 } from '@/store/redux/slices/cardSlice';
 import { Card } from '@/types/card';
+import { Add as AddIcon, Search as SearchIcon } from '@mui/icons-material';
+import {
+  Box,
+  Button,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@mui/material';
 import React, { useCallback, useEffect } from 'react';
 
 const MindCard: React.FC = () => {
@@ -168,16 +176,129 @@ const MindCard: React.FC = () => {
   );
 
   return (
-    <div className="app-container">
-      {/* Header 顶部栏 */}
-      <Header
-        onCreateCard={() => handleCreateCard('新卡片')}
-        searchQuery={searchQuery}
-        onSearchChange={value => dispatch(setSearchQuery(value))}
-      />
-
+    <Box>
       {/* 面包屑导航 */}
       <Breadcrumb currentPath={currentPath} onNavigateBack={navigateBack} />
+
+      {/* 操作栏 */}
+      <Box
+        sx={{
+          mt: 1,
+          mb: 1,
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: 2,
+        }}
+      >
+        {/* 搜索和添加按钮 */}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 2,
+            minWidth: { xs: '100%', sm: 'auto' },
+          }}
+        >
+          <TextField
+            placeholder="搜索卡片..."
+            value={searchQuery}
+            onChange={e => dispatch(setSearchQuery(e.target.value))}
+            size="small"
+            variant="outlined"
+            sx={{
+              width: { xs: '100%', sm: 280 },
+              '& .MuiOutlinedInput-root': {
+                borderRadius: 2,
+                backgroundColor: 'background.paper',
+                '&:hover': {
+                  borderColor: 'primary.main',
+                },
+                '&.Mui-focused': {
+                  borderColor: 'primary.main',
+                  boxShadow: '0 0 0 2px rgba(25, 118, 210, 0.2)',
+                },
+              },
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon
+                    sx={{
+                      color: searchQuery ? 'primary.main' : 'text.secondary',
+                      fontSize: 20,
+                    }}
+                  />
+                </InputAdornment>
+              ),
+              endAdornment: searchQuery && (
+                <InputAdornment position="end">
+                  <IconButton
+                    size="small"
+                    onClick={() => dispatch(setSearchQuery(''))}
+                    sx={{
+                      color: 'text.secondary',
+                      '&:hover': { color: 'primary.main' },
+                    }}
+                  >
+                    ×
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => handleCreateCard('新卡片')}
+            sx={{
+              borderRadius: 2,
+              px: 3,
+              py: 1,
+              backgroundColor: 'primary.main',
+              color: 'white',
+              fontWeight: 500,
+              textTransform: 'none',
+              boxShadow: '0 2px 8px rgba(25, 118, 210, 0.3)',
+              '&:hover': {
+                backgroundColor: 'primary.dark',
+                boxShadow: '0 4px 12px rgba(25, 118, 210, 0.4)',
+                transform: 'translateY(-1px)',
+              },
+              transition: 'all 0.2s ease',
+            }}
+          >
+            新建卡片
+          </Button>
+        </Box>
+      </Box>
+
+      {/* 卡片统计信息 */}
+      <Box
+        sx={{
+          mt: 1,
+          mb: 1,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 4,
+          color: 'text.secondary',
+          fontSize: '0.875rem',
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Typography variant="body2">
+            总计: <strong>{getCurrentCards().length}</strong> 张卡片
+          </Typography>
+        </Box>
+        {searchQuery && (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Typography variant="body2" color="primary.main">
+              搜索结果: <strong>{getCurrentCards().length}</strong> 张卡片
+            </Typography>
+          </Box>
+        )}
+      </Box>
 
       {/* 卡片容器 */}
       <CardSpace
@@ -188,7 +309,7 @@ const MindCard: React.FC = () => {
         onDeleteCard={handleDeleteCard}
         onCreateCard={handleCreateCard}
       />
-    </div>
+    </Box>
   );
 };
 
